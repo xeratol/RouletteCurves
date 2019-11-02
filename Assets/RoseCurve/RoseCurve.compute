@@ -1,0 +1,19 @@
+﻿#pragma kernel GeneratePoints
+
+float radius;
+float k;
+float angleRadInc;
+float3 center;
+
+RWStructuredBuffer<float3> points;
+
+[numthreads(360,1,1)]
+void GeneratePoints(uint3 id : SV_DispatchThreadID)
+{
+    float angleRad = id.x * angleRadInc;
+    float r = radius * cos(k * angleRad);
+    float3 p = float3(0, 0, 0);
+    p.x = center.x + r * cos(angleRad);
+    p.y = center.y + r * sin(angleRad);
+    points[id.x] = p;
+}
